@@ -14,6 +14,10 @@ git clone https://github.com/kunal-mohta/maskrcnn-nnfl.git
 cd maskrcnn-nnfl
 ```
 
+Download our trained weights from the following drive link and place it in the repository at root:-
+<a href="https://drive.google.com/file/d/1uxCYL8dPKNSdYuIwaD2uM4NScyDKW6Ts/view?usp=sharing" target="_blank">Trained weights</a>
+(Github has 100mb limit on file size)
+
 Create conda enviroment using the provided yaml file (no need if using Google Colab)
 ```
 conda env create --file maskrcnn-nnfl.yml --name maskrcnn-nnfl
