@@ -24,14 +24,20 @@ conda env create --file maskrcnn-nnfl.yml --name maskrcnn-nnfl
 conda activate maskrcnn-nnfl
 ```
 
-Install pycocotools from code present in repo (skip this if using Google Colab)
+Install `pycocotools` from code present in repo (skip this if using Google Colab)
 ```
 cd coco/PythonAPI
 make
 sudo make install
-sudo python setup.py install
+sudo python3 setup.py install
 cd ../..
 ```
+The above requires `Cython` to be installed. Do the following if you get an error for that
+```
+pip3 install --upgrade cython
+```
+and run the commands for installing `pycocotools` again.
+
 **Note**: `pycocotools` package is not directly used because there are some unfixed bugs in the official package. A custom version with fixed bugs is begin used here.
 But if you are using on Google Colab, it will be difficult to build this package. Instead, you could skip this with the caveat of Model Evaluation not working.
 
@@ -41,7 +47,7 @@ Run the main jupyter notebook
 jupyter-notebook main.ipynb
 ```
 
-Run cells in the notebook and keep following the comments in each, from the top till **Dataset download** section - including Coco Dataset class.
+Run cells in the notebook and keep following the comments in each, from the top till **Dataset download** section - including **Coco Dataset class** section.
 
 ### Run Inferences
 
@@ -51,7 +57,7 @@ Run all cells that are before the next section.
 
 ### Run Training
 
-Find the **Dataset download** section.
+Go to the **Dataset download** section.
 Run the cells starting from this section and keep reading the comments for details. Run all cells till the **Training** section.
 
 We have done training in 3 stages - training the head layers, 4+ ResNet layers, and then all layers. Code for this training schedule is present in the **Training** section. Change this as per your requirement.
@@ -62,5 +68,5 @@ We have done training in 3 stages - training the head layers, 4+ ResNet layers, 
 - This only works if you installed the custom `pycocotools` package (see above).
 - This also requires the validation dataset to be downloaded, unless if you just want to test the code and are using the provided smaller dataset.
 
-Find **Evaluation** section and run all cells.
+Go to the **Evaluation** section and run all cells.
 
