@@ -71,3 +71,27 @@ We have done training in 3 stages - training the head layers, 4+ ResNet layers, 
 
 Go to the **Evaluation** section and run all cells.
 
+### Quantitative Results
+
+- Mean Average Precision for **Object Detection** = **0.288** (0.382 in Mask-RCNN paper)
+- Mean Average Precision for **Image Segmentation** = **0.275** (0.357 in Mask-RCNN paper)
+
+<center>
+<img src = "./results/quantitative.png" width = "700px"/>
+</center>
+
+### Qualitative Results
+
+<center>
+<img src = "./results/good_pred.png" width = "750px"/>
+<hr/>
+<img src = "./results/bad_pred.png" width = "750px"/>
+<hr/>
+<img src = "./results/missed_pred.png" width = "750px"/>
+<hr/>
+<img src = "./results/class_pred.png" width = "750px"/>
+<hr/>
+
+#### Custom Image
+<img src = "./results/custom_pred.png" width = "750px"/>
+</center>
