@@ -5,6 +5,16 @@ Contributors:-
 - Himank Methi - 2017A3PS0274P
 - Kunal Mohta - 2017A7PS0148P
 
+Files and Directories:-
+- model.py => Main code for Mask R-CNN model
+- main.ipynb => Notebook to run and test code
+- coco => pycocotools library
+- visualize.py => visualization library
+- images => Test images for inference
+- maskrcnn-nnfl.yml => Environment file (conda)
+- smaller_dataset => Small dataset in coco format to test code quickly
+- weights => Directory where weights from model training go
+
 [Presentation](./presentation.pptx)
 
 ### Getting started
@@ -62,6 +72,8 @@ Go to the **Dataset download** section.
 Run the cells starting from this section and keep reading the comments for details. Run all cells till the **Training** section.
 
 We have done training in 3 stages - training the head layers, 4+ ResNet layers, and then all layers. Code for this training schedule is present in the **Training** section. Change this as per your requirement.
+
+**Note**: Training Mask R-CNN is very computationally expensive and requires a GPU. If you don't have a powerful hardware, don't run the training code as it might cause the machine to crash.
 
 ### Run Evaluation
 

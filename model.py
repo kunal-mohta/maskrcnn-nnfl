@@ -46,7 +46,6 @@ TRAIN_ROIS_PER_IMAGE = 200
 ROI_POSITIVE_RATIO = 0.33
 MASK_SHAPE = [28, 28]
 IMAGE_SHAPE = np.array([1024, 1024, 3])
-# IMAGE_RESIZE_MODE = "square"
 BACKBONE_STRIDES = [4, 8, 16, 32, 64]
 BACKBONE = "resnet101"
 BATCH_SIZE = 1
@@ -639,14 +638,14 @@ def overlaps_graph(boxes1, boxes2):
     """Computes IoU overlaps between two sets of boxes.
     boxes1, boxes2: [N, (y1, x1, y2, x2)].
     """
-    # 1. Tile boxes2 and repeat boxes1. This allows us to compare
+    # Tile boxes2 and repeat boxes1. This allows us to compare
     # every boxes1 against every boxes2 without loops.
     # TF doesn't have an equivalent to np.repeat() so simulate it
     # using tf.tile() and tf.reshape.
     b1 = tf.reshape(tf.tile(tf.expand_dims(boxes1, 1),
                             [1, 1, tf.shape(boxes2)[0]]), [-1, 4])
     b2 = tf.tile(boxes2, [tf.shape(boxes1)[0], 1])
-    # 2. Compute intersections
+    # Compute intersections
     b1_y1, b1_x1, b1_y2, b1_x2 = tf.split(b1, 4, axis=1)
     b2_y1, b2_x1, b2_y2, b2_x2 = tf.split(b2, 4, axis=1)
     y1 = tf.maximum(b1_y1, b2_y1)
@@ -654,11 +653,11 @@ def overlaps_graph(boxes1, boxes2):
     y2 = tf.minimum(b1_y2, b2_y2)
     x2 = tf.minimum(b1_x2, b2_x2)
     intersection = tf.maximum(x2 - x1, 0) * tf.maximum(y2 - y1, 0)
-    # 3. Compute unions
+    # Compute unions
     b1_area = (b1_y2 - b1_y1) * (b1_x2 - b1_x1)
     b2_area = (b2_y2 - b2_y1) * (b2_x2 - b2_x1)
     union = b1_area + b2_area - intersection
-    # 4. Compute IoU and reshape to [boxes1, boxes2]
+    # Compute IoU and reshape to [boxes1, boxes2]
     iou = intersection / union
     overlaps = tf.reshape(iou, [tf.shape(boxes1)[0], tf.shape(boxes2)[0]])
     return overlaps
@@ -698,10 +697,10 @@ def detection_targets_graph(proposals, gt_class_ids, gt_boxes, gt_masks):
 
     # Determine positive and negative ROIs
     roi_iou_max = tf.reduce_max(overlaps, axis=1)
-    # 1. Positive ROIs are those with >= 0.5 IoU with a GT box
+    # Positive ROIs are those with >= 0.5 IoU with a GT box
     positive_roi_bool = (roi_iou_max >= 0.5)
     positive_indices = tf.where(positive_roi_bool)[:, 0]
-    # 2. Negative ROIs are those with < 0.5 with every GT box. Skip crowds.
+    # Negative ROIs are those with < 0.5 with every GT box. Skip crowds.
     negative_indices = tf.where(tf.logical_and(roi_iou_max < 0.5, no_crowd_bool))[:, 0]
 
     # Subsample ROIs. Aim for 33% positive
@@ -786,7 +785,6 @@ class DetectionTargetLayer(KE.Layer):
         gt_masks = inputs[3]
 
         # Slice the batch and run a graph for each slice
-        # TODO: Rename target_bbox to target_deltas for clarity
         names = ["rois", "target_class_ids", "target_bbox", "target_mask"]
         proposals = tf.squeeze(proposals, [0])
         gt_class_ids = tf.squeeze(gt_class_ids, [0])
@@ -1161,8 +1159,6 @@ def mrcnn_class_loss_graph(target_class_ids, pred_class_logits, active_class_ids
 
     # Find predictions of classes that are not in the dataset.
     pred_class_ids = tf.argmax(pred_class_logits, axis=2)
-    # TODO: Update this line to work with batch > 1. Right now it assumes all
-    #       images in a batch have the same active_class_ids
     pred_active = tf.gather(active_class_ids[0], pred_class_ids)
 
     # Loss
@@ -1710,7 +1706,6 @@ class MaskRCNN():
         
         import h5py
         # Conditional import to support versions of Keras before 2.2
-        # TODO: remove in about 6 months (end of 2018)
         try:
             from keras.engine import saving
         except ImportError:
@@ -1921,7 +1916,6 @@ class MaskRCNN():
         
         for img in images:
             # Resize image
-            # TODO: move resizing to mold_image()
             molded_img, window, scale, padding = resize_image(img)
             molded_img = mold_image(molded_img)
             # Build image_meta
