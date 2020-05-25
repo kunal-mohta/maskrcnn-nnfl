@@ -15,7 +15,7 @@ Files and Directories:-
 - smaller_dataset => Small dataset in coco format to test code quickly
 - weights => Directory where weights from model training go
 
-[Presentation](./presentation.pptx)
+[Presentation](./51.pdf)
 
 ### Getting started
 
